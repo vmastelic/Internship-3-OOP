@@ -163,11 +163,12 @@ namespace Internship_3_OOP
                 var choice = Console.ReadLine();
                 switch (choice)
                 {
+                    case "1": passenger.PrintReservedFlights(passenger); break;
+                    case "2": break;
                     case "5": return;
                 }
             }
         }
-
 
     }
 }
