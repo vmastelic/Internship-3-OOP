@@ -24,7 +24,6 @@
             if (!Reservations.Contains(reservation))
                 Reservations.Add(reservation);
         }
-
         public void PrintReservedFlights(Passenger passenger)
         {
             Console.Clear();
@@ -34,7 +33,6 @@
             Console.Write("Pritisnite bilo koju tipku za nastavak...");
             Console.ReadKey();
         }
-
         public void ReserveFlight(Passenger passenger)
         {
             Console.Clear();
@@ -72,7 +70,8 @@
             while (true)
             {
                 Console.Write("Odabir vrstu karte: ");
-                Console.WriteLine("0 - Standard\n1 - Buissnes\n2 - Vip");
+                Console.WriteLine("\n0 - Standard\n1 - Buissnes\n2 - Vip");
+                Console.Write("Odabir: ");
                 if (int.TryParse(Console.ReadLine(), out int ticketChoice) && ticketChoice >= 0 && ticketChoice <= 2)
                 {
                     ticketType = (TicketType)ticketChoice;
@@ -93,7 +92,61 @@
             var selectedReservation = new Reservation(passenger, selectedFlight, ticketType);
             passenger.Reservations.Add(selectedReservation);
             selectedFlight.Passengers.Add(passenger);
-            Console.WriteLine($"\nLet '{selectedFlight.Name}' uspješno rezerviran!");
+            Console.WriteLine($"\nLet '{selectedFlight.Name}' uspješno rezerviran sa kartom {ticketType}!");
+            Console.Write("Pritisnite bilo koju tipku za nastavak...");
+            Console.ReadKey();
+        }
+
+        public void FindFlight(Passenger passenger)
+        {
+            var availableFlights = InitialData.Flights.Where(flight => passenger.Reservations.Any(r => r.Flight == flight)).ToList();
+            Console.Clear();
+            Console.WriteLine("Pretrazi let po\na) ID\nb) Ime");
+            Console.Write("\nOdabir: ");
+            var choice = Console.ReadLine();
+            if(choice == "a")
+            {
+                Console.Write("\nUnesi ID:");
+                if (!int.TryParse(Console.ReadLine(), out int flightID))
+                {
+                    Console.WriteLine("Neispravan ID!");
+                    Console.Write("Pritisnite bilo koju tipku za nastavak...");
+                    Console.ReadKey();
+                    return;
+                }
+                var wantedFlight = availableFlights.FirstOrDefault(flight => flight.ID == flightID);
+                if (wantedFlight == null)
+                {
+                    Console.WriteLine("Let s tim ID-om nije rezerviran.");
+                    Console.Write("Pritisnite bilo koju tipku za nastavak...");
+                    Console.ReadKey();
+                    return;
+                }
+                Console.WriteLine("Trazeni let: ");
+                Console.WriteLine($"{wantedFlight.ID} - {wantedFlight.Name} - {wantedFlight.Departure:yyyy-MM-dd} - {wantedFlight.Arrival:yyyy-MM-dd} - {wantedFlight.Distance}km - {wantedFlight.Duration}");
+            }
+            else if (choice == "b")
+            {
+                Console.Write("Unesi ime: ");
+                var flightName = Console.ReadLine();
+                if (flightName == null)
+                {
+                    Console.WriteLine("Neispravan unos imena");
+                    Console.Write("Pritisnite bilo koju tipku za nastavak...");
+                    Console.ReadKey();
+                    return;
+                }
+                var wantedFlight = availableFlights.FirstOrDefault(flight => flight.Name == flightName);
+                if (wantedFlight == null)
+                {
+                    Console.WriteLine("Let s tim ID-om nije rezerviran.");
+                    Console.Write("Pritisnite bilo koju tipku za nastavak...");
+                    Console.ReadKey();
+                    return;
+                }
+                Console.WriteLine("Trazeni let: ");
+                Console.WriteLine($"{wantedFlight.ID} - {wantedFlight.Name} - {wantedFlight.Departure:yyyy-MM-dd} - {wantedFlight.Arrival:yyyy-MM-dd} - {wantedFlight.Distance}km - {wantedFlight.Duration}");
+            }
             Console.Write("Pritisnite bilo koju tipku za nastavak...");
             Console.ReadKey();
         }

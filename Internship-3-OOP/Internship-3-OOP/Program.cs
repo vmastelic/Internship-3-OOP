@@ -161,6 +161,7 @@ namespace Internship_3_OOP
                 {
                     case "1": passenger.PrintReservedFlights(passenger); break;
                     case "2": passenger.ReserveFlight(passenger); break;
+                    case "3": passenger.FindFlight(passenger); break;
                     case "5": return;
                 }
             }
