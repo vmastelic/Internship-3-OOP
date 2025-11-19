@@ -18,7 +18,6 @@
         public int StandardCapacity { get; set; }
         public int BusinessCapacity { get; set; }
         public int VipCapacity { get; set; }
-
         public Flight(string name, DateTime departure, DateTime arrival, int distance, TimeSpan duration, int Standard, int Buisness, int Vip)
         {
             Name = name;
@@ -31,13 +30,17 @@
             VipCapacity = Vip;
         }
 
-        public void AddPassenger(Passenger passenger)
+        public int GetAvailableSeats(TicketType type)
         {
-            if (!Passengers.Contains(passenger))
+            int usedSeats = Passengers.SelectMany(passenger => passenger.Reservations).Count(reservation => reservation.Flight == this && reservation.TicketType == type);
+
+            return type switch
             {
-                Passengers.Add(passenger);
-                passenger.ReservedFlights.Add(this);
-            }
+                TicketType.Standard => StandardCapacity - usedSeats,
+                TicketType.Business => BusinessCapacity - usedSeats,
+                TicketType.VIP => VipCapacity - usedSeats,
+                _ => 0
+            };
         }
     }
 }

@@ -17,13 +17,13 @@ namespace Internship_3_OOP
                 Console.WriteLine("5 - Izlaz iz programa");
                 Console.Write("\nOdabir: ");
                 var choice = Console.ReadLine();
-                switch(choice)
+                switch (choice)
                 {
                     case "1":
                         PassengersMenu();
                         break;
                     case "5": return;
-                }                
+                }
             }
         }
         static void PassengersMenu()
@@ -49,21 +49,21 @@ namespace Internship_3_OOP
         static void PassengerRegistration()
         {
             Passenger passenger = new Passenger();
-            Console.Clear ();
+            Console.Clear();
             Console.WriteLine("===REGISTRACIJA PUTNIKA===");
 
             while (true)
             {
                 Console.Write("Unesite ime: ");
                 var name = Console.ReadLine();
-                if (!string.IsNullOrWhiteSpace(name)){passenger.Name = name; break;}
+                if (!string.IsNullOrWhiteSpace(name)) { passenger.Name = name; break; }
                 else Console.WriteLine("Prezime ne smije biti prazno, pokusajte ponovno.");
             }
             while (true)
             {
                 Console.Write("Unesi prezime: ");
                 var surname = Console.ReadLine();
-                if (!string.IsNullOrWhiteSpace(surname)){passenger.Surname = surname; break;}
+                if (!string.IsNullOrWhiteSpace(surname)) { passenger.Surname = surname; break; }
                 else Console.WriteLine("Prezime ne smije biti prazno, pokusajte ponovno.");
             }
 
@@ -90,7 +90,7 @@ namespace Internship_3_OOP
                     Console.ReadKey();
                     return;
                 }
-                else if(email != null)
+                else if (email != null)
                 {
                     passenger.Email = email;
                     break;
@@ -109,7 +109,7 @@ namespace Internship_3_OOP
                     Console.WriteLine("Pokušajte ponovno.");
                 }
                 else if (passwordFirst != null)
-                {passenger.Password = passwordFirst; break;}
+                { passenger.Password = passwordFirst; break; }
             }
             InitialData.Passengers.Add(passenger);
             Console.WriteLine($"Putnik {passenger.Name} {passenger.Surname} registriran.");

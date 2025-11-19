@@ -17,13 +17,17 @@
             var secondFlight = new Flight("Rim", new DateTime(2025, 6, 12, 8, 0, 0), new DateTime(2025, 6, 12, 9, 30, 0), 650, TimeSpan.FromHours(2.25), 100, 20, 10);
             var thirdFlight = new Flight("Berlin", new DateTime(2025, 6, 12, 8, 0, 0), new DateTime(2025, 6, 12, 9, 30, 0), 650, TimeSpan.FromHours(2.25), 100, 20, 10);
 
+            var firstReservation = new Reservation(firstPassenger, firstFlight, TicketType.Standard);
+            var secondReservation = new Reservation(secondPassenger, secondFlight, TicketType.Standard);
+            var thirdReservation = new Reservation(secondPassenger, thirdFlight, TicketType.Business);
+
             Flights.Add(firstFlight);
             Flights.Add(secondFlight);
             Flights.Add(thirdFlight);
 
-            firstPassenger.AddFlight(firstFlight);
-            firstPassenger.AddFlight(secondFlight);
-            secondPassenger.AddFlight(secondFlight);
+            firstPassenger.AddReservation(firstReservation);
+            secondPassenger.AddReservation(secondReservation);
+            secondPassenger.AddReservation(thirdReservation);
         }
     }
 }

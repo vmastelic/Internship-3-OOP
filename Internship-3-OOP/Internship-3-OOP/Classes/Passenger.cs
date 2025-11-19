@@ -7,7 +7,7 @@
         public DateOnly BirthDate { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public List<Flight> ReservedFlights { get; set; } = new List<Flight>();
+        public List<Reservation> Reservations { get; set; } = new List<Reservation>();
 
         public Passenger() { }
         public Passenger(string name, string surname, DateOnly birthDate,
@@ -19,42 +19,40 @@
             Email = email;
             Password = password;
         }
-        public void AddFlight(Flight flight)
+        public void AddReservation(Reservation reservation)
         {
-            if (!ReservedFlights.Contains(flight))
-            {
-                ReservedFlights.Add(flight);
-                flight.Passengers.Add(this);
-            }
+            if (!Reservations.Contains(reservation))
+                Reservations.Add(reservation);
         }
 
         public void PrintReservedFlights(Passenger passenger)
         {
             Console.Clear();
-            foreach (var flight in ReservedFlights)
-                Console.WriteLine($"{flight.ID} - {flight.Name} - {flight.Departure.ToString("yyyy-MM-dd")} - {flight.Arrival.ToString("yyyy-MM-dd")} - {flight.Distance} - {flight.Duration}");
+            foreach (var reservation in Reservations)
+                Console.WriteLine($"{reservation.Flight.ID} - {reservation.Flight.Name} - {reservation.Flight.Departure.ToString("yyyy-MM-dd")} - {reservation.Flight.Arrival.ToString("yyyy-MM-dd")} - {reservation.Flight.Distance} - {reservation.Flight.Duration}");
 
             Console.Write("Pritisnite bilo koju tipku za nastavak...");
-            Console.ReadLine();
+            Console.ReadKey();
         }
 
         public void ReserveFlight(Passenger passenger)
         {
             Console.Clear();
-            var availableFlights = InitialData.Flights.Where(flight => !passenger.ReservedFlights.Contains(flight)).ToList();
 
+            var availableFlights = InitialData.Flights.Where(flight => !passenger.Reservations.Any(r => r.Flight == flight)).ToList();
             if (availableFlights.Count == 0)
             {
                 Console.WriteLine("Nema dostupnih letova za rezervaciju.");
+                Console.Write("Pritisnite bilo koju tipku za nastavak...");
                 Console.ReadKey();
                 return;
             }
             Console.WriteLine("Dostupni letovi: ");
-            foreach(var flight in availableFlights)
+            foreach (var flight in availableFlights)
                 Console.WriteLine($"{flight.ID} - {flight.Name} - {flight.Departure:yyyy-MM-dd} - {flight.Arrival:yyyy-MM-dd} - {flight.Distance}km - {flight.Duration}");
 
             Console.Write("\nUnesite ID leta koji zelite rezervirati: ");
-            if(!int.TryParse(Console.ReadLine(), out int flightID))
+            if (!int.TryParse(Console.ReadLine(), out int flightID))
             {
                 Console.WriteLine("Neispravan ID!");
                 Console.Write("Pritisnite bilo koju tipku za nastavak...");
@@ -69,12 +67,35 @@
                 Console.ReadKey();
                 return;
             }
-            passenger.ReservedFlights.Add(selectedFlight);
+
+            TicketType ticketType;
+            while (true)
+            {
+                Console.Write("Odabir vrstu karte: ");
+                Console.WriteLine("0 - Standard\n1 - Buissnes\n2 - Vip");
+                if (int.TryParse(Console.ReadLine(), out int ticketChoice) && ticketChoice >= 0 && ticketChoice <= 2)
+                {
+                    ticketType = (TicketType)ticketChoice;
+                    break;
+                }
+                else Console.WriteLine("Neispravan unos! Unesite broj od 0 do 2.");
+            }
+
+            if(selectedFlight.GetAvailableSeats(ticketType) == 0)
+            {
+                Console.WriteLine("Karte su rasprodane za tu kategoriju.");
+                Console.Write("Pritisnite bilo koju tipku za nastavak...");
+                Console.ReadKey();
+                return;
+
+            }
+            
+            var selectedReservation = new Reservation(passenger, selectedFlight, ticketType);
+            passenger.Reservations.Add(selectedReservation);
             selectedFlight.Passengers.Add(passenger);
             Console.WriteLine($"\nLet '{selectedFlight.Name}' uspješno rezerviran!");
             Console.Write("Pritisnite bilo koju tipku za nastavak...");
-            Console.ReadLine();
+            Console.ReadKey();
         }
-
     }
 }
