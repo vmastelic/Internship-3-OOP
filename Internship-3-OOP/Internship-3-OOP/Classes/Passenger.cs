@@ -10,8 +10,7 @@
         public List<Reservation> Reservations { get; set; } = new List<Reservation>();
 
         public Passenger() { }
-        public Passenger(string name, string surname, DateOnly birthDate,
-                     string email, string password)
+        public Passenger(string name, string surname, DateOnly birthDate, string email, string password)
         {
             Name = name;
             Surname = surname;
@@ -96,10 +95,9 @@
             Console.Write("Pritisnite bilo koju tipku za nastavak...");
             Console.ReadKey();
         }
-
         public void FindFlight(Passenger passenger)
         {
-            var availableFlights = InitialData.Flights.Where(flight => passenger.Reservations.Any(r => r.Flight == flight)).ToList();
+            var reservedFlights = InitialData.Flights.Where(flight => passenger.Reservations.Any(r => r.Flight == flight)).ToList();
             Console.Clear();
             Console.WriteLine("Pretrazi let po\na) ID\nb) Ime");
             Console.Write("\nOdabir: ");
@@ -114,7 +112,7 @@
                     Console.ReadKey();
                     return;
                 }
-                var wantedFlight = availableFlights.FirstOrDefault(flight => flight.ID == flightID);
+                var wantedFlight = reservedFlights.FirstOrDefault(flight => flight.ID == flightID);
                 if (wantedFlight == null)
                 {
                     Console.WriteLine("Let s tim ID-om nije rezerviran.");
@@ -136,7 +134,7 @@
                     Console.ReadKey();
                     return;
                 }
-                var wantedFlight = availableFlights.FirstOrDefault(flight => flight.Name == flightName);
+                var wantedFlight = reservedFlights.FirstOrDefault(flight => flight.Name == flightName);
                 if (wantedFlight == null)
                 {
                     Console.WriteLine("Let s tim ID-om nije rezerviran.");
@@ -149,6 +147,62 @@
             }
             Console.Write("Pritisnite bilo koju tipku za nastavak...");
             Console.ReadKey();
+        }
+        public void CancelFlight(Passenger passenger)
+        {
+            Console.Clear();
+            Console.WriteLine("Rezervirani letovi: ");
+            var reservedFlights = InitialData.Flights.Where(flight => passenger.Reservations.Any(r => r.Flight == flight)).ToList();
+            foreach (var flight in reservedFlights)
+                Console.WriteLine($"{flight.ID} - {flight.Name} - {flight.Departure:yyyy-MM-dd} - {flight.Arrival:yyyy-MM-dd} - {flight.Distance}km - {flight.Duration}");
+
+            Console.Write("Unesi ID leta koji zeliš otkazati: ");
+            if (!int.TryParse(Console.ReadLine(), out int flightID))
+            {
+                Console.WriteLine("Neispravan ID!");
+                Console.Write("Pritisnite bilo koju tipku za nastavak...");
+                Console.ReadKey();
+                return;
+            }
+            var wantedFlight = reservedFlights.FirstOrDefault(flight => flight.ID == flightID);
+            if (wantedFlight == null)
+            {
+                Console.WriteLine("Let s tim ID-om nije rezerviran.");
+                Console.Write("Pritisnite bilo koju tipku za nastavak...");
+                Console.ReadKey();
+                return;
+            }
+            if (wantedFlight.Departure <= DateTime.Now.AddHours(24) && wantedFlight.Departure > DateTime.Now)
+            {
+                Console.WriteLine("Ne možete otkazati let koji polieće za manje od 24h.");
+                Console.Write("Pritisnite bilo koju tipku za nastavak...");
+                Console.ReadKey();
+                return;
+            }
+            
+            var reservationToRemove = passenger.Reservations.First(reservation => reservation.Flight.ID == flightID);
+            if (reservationToRemove == null)
+            {
+                Console.WriteLine("Rezervacija nije pronađena.");
+                Console.ReadKey();
+                return;
+            }
+            Console.Write($"Jeste li sigurni da želite otkazati let '{wantedFlight.Name}'?(da/ne):");
+            var choice = Console.ReadLine();
+            if (choice.ToLower() != "da")
+            {
+                Console.WriteLine("Otkazivanje otkazano.");
+                Console.Write("Pritisnite bilo koju tipku za nastavak...");
+                Console.ReadKey();
+                return;
+            }
+            passenger.Reservations.Remove(reservationToRemove);
+            wantedFlight.Passengers.Remove(passenger);
+            Console.WriteLine("Otkazivanje uspjesno.");
+            Console.Write("Pritisnite bilo koju tipku za nastavak...");
+            Console.ReadKey();
+            return;
+
         }
     }
 }
