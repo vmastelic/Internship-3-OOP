@@ -124,7 +124,7 @@ namespace Internship_3_OOP
             var email = Console.ReadLine();
             if (email == null) return;
 
-            var passenger = InitialData.Passengers.FirstOrDefault(x => x.Email == email);
+            var passenger = InitialData.Passengers.FirstOrDefault(passenger => passenger.Email == email);
             if (passenger == null)
             {
                 Console.WriteLine("Ne postoji taj email.");

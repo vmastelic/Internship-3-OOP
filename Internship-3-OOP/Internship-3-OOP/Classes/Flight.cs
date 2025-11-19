@@ -19,13 +19,16 @@
         public int BusinessCapacity { get; set; }
         public int VipCapacity { get; set; }
 
-        public Flight(string name, DateTime departure, DateTime arrival, int distance, TimeSpan duration)
+        public Flight(string name, DateTime departure, DateTime arrival, int distance, TimeSpan duration, int Standard, int Buisness, int Vip)
         {
             Name = name;
             Departure = departure;
             Arrival = arrival;
             Distance = distance;
             Duration = duration;
+            StandardCapacity = Standard;
+            BusinessCapacity = Buisness;
+            VipCapacity = Vip;
         }
 
         public void AddPassenger(Passenger passenger)
@@ -36,6 +39,5 @@
                 passenger.ReservedFlights.Add(this);
             }
         }
-
     }
 }

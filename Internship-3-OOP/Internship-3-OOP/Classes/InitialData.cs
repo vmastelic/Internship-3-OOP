@@ -13,12 +13,13 @@
             Passengers.Add(firstPassenger);
             Passengers.Add(secondPassenger);
 
-            var firstFlight = new Flight("Pariz", new DateTime(2025, 6, 10, 14, 30, 0), new DateTime(2025, 6, 10, 16, 45, 0), 550, TimeSpan.FromHours(2.25));
-            var secondFlight = new Flight("Rim", new DateTime(2025, 6, 12, 8, 0, 0), new DateTime(2025, 6, 12, 9, 30, 0), 650, TimeSpan.FromHours(2.25));
-            var thirdFlight = new Flight("Berlin", new DateTime(2025, 6, 12, 8, 0, 0), new DateTime(2025, 6, 12, 9, 30, 0), 650, TimeSpan.FromHours(2.25));
+            var firstFlight = new Flight("Pariz", new DateTime(2025, 6, 10, 14, 30, 0), new DateTime(2025, 6, 10, 16, 45, 0), 550, TimeSpan.FromHours(2.25), 100, 20, 10);
+            var secondFlight = new Flight("Rim", new DateTime(2025, 6, 12, 8, 0, 0), new DateTime(2025, 6, 12, 9, 30, 0), 650, TimeSpan.FromHours(2.25), 100, 20, 10);
+            var thirdFlight = new Flight("Berlin", new DateTime(2025, 6, 12, 8, 0, 0), new DateTime(2025, 6, 12, 9, 30, 0), 650, TimeSpan.FromHours(2.25), 100, 20, 10);
 
             Flights.Add(firstFlight);
             Flights.Add(secondFlight);
+            Flights.Add(thirdFlight);
 
             firstPassenger.AddFlight(firstFlight);
             firstPassenger.AddFlight(secondFlight);
