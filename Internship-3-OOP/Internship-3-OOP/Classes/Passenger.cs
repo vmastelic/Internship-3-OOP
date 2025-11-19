@@ -32,10 +32,11 @@
         {
             Console.Clear();
             foreach (var flight in ReservedFlights)
-                Console.WriteLine($"{flight.ID} - {flight.Name} - {flight.Departure} - {flight.Arrival} - {flight.Distance} - {flight.Duration}");
+                Console.WriteLine($"{flight.ID} - {flight.Name} - {flight.Departure.ToString("yyyy-MM-dd")} - {flight.Arrival.ToString("yyyy-MM-dd")} - {flight.Distance} - {flight.Duration}");
 
             Console.Write("Pritisnite bilo koju tipku za nastavak...");
             Console.ReadLine();
         }
+
     }
 }

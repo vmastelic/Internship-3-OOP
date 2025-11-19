@@ -2,13 +2,14 @@
 {
     public abstract class BaseClass
     {
-        public Guid ID { get; set; }
+        private static int NextID = 0;
+        public int ID { get; set; }
         public DateTime CreatedTime { get; set; }
         public DateTime LastUpdatedTime { get; set; }
 
         protected BaseClass()
         {
-            ID = Guid.NewGuid();
+            ID = NextID++;
             CreatedTime = DateTime.Now;
             LastUpdatedTime = DateTime.Now;
         }

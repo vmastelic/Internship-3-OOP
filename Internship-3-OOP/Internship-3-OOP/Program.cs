@@ -1,5 +1,4 @@
 ﻿using Internship_3_OOP.Classes;
-
 namespace Internship_3_OOP
 {
     internal class Program
@@ -47,7 +46,6 @@ namespace Internship_3_OOP
                 }
             }
         }
-
         static void PassengerRegistration()
         {
             Passenger passenger = new Passenger();
@@ -118,7 +116,6 @@ namespace Internship_3_OOP
             Console.Write("Pritisnite bilo koju tipku za nastavak...");
             Console.ReadLine();
         }
-
         static void PassengerLogin()
         {
             Console.Clear();
@@ -147,7 +144,6 @@ namespace Internship_3_OOP
             Console.Write("Pritisnite bilo koju tipku za nastavak...");
             Console.ReadLine();
         }
-
         static void LoggedInMenu(Passenger passenger)
         {
             while (true)
@@ -164,11 +160,10 @@ namespace Internship_3_OOP
                 switch (choice)
                 {
                     case "1": passenger.PrintReservedFlights(passenger); break;
-                    case "2": break;
+                    case "2": passenger.ReserveFlight(passenger); break;
                     case "5": return;
                 }
             }
         }
-
     }
 }
