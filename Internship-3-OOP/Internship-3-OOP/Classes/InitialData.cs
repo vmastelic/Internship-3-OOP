@@ -1,4 +1,6 @@
-﻿namespace Internship_3_OOP.Classes
+﻿using System.Net.Sockets;
+
+namespace Internship_3_OOP.Classes
 {
     internal class InitialData
     {
@@ -299,6 +301,73 @@
             Console.Write("Pritisnite bilo koju tipku za nastavak...");
             Console.ReadKey();
         }
+        public static void AddAirplane()
+        {
+            Console.Clear();
+            Airplane airplane = new Airplane();
+            Console.WriteLine("===DODAVANJE AVIONA===");
+            while (true)
+            {
+                Console.Write("Unesite naziv aviona: ");
+                var name = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(name)) { airplane.Name = name; break; }
+                else Console.WriteLine("Naziv ne smije biti prazan, pokušajte ponovno.");
+            }
+            while (true)
+            {
+                Console.Write("Unesite godinu porizvodnje aviona: ");
+                if(int.TryParse(Console.ReadLine(), out int year) && year <= 2025 && year >= 1925)
+                {
+                    airplane.Year = year;
+                    break;
+                }
+                else Console.WriteLine("Neispravan unos godine proizvodnje aviona");
+            }
 
+            while (true)
+            {
+                Console.WriteLine("\nOdabir vrste karata:");
+                Console.WriteLine("0 - Standard");
+                Console.WriteLine("1 - Business");
+                Console.WriteLine("2 - VIP");
+                Console.WriteLine("3 - Kraj unosa");
+                Console.Write("Odabir: ");
+
+                if (!int.TryParse(Console.ReadLine(), out int ticketChoice) || ticketChoice < 0 || ticketChoice > 3)
+                {
+                    Console.WriteLine("Neispravan unos! Unesite broj od 0 do 3.");
+                    continue;
+                }
+
+                if (ticketChoice == 3) break;
+
+                TicketType ticketType = (TicketType)ticketChoice;
+                Console.Clear();
+                Console.Write($"Unesite broj sjedećih mjesta za kategoriju {ticketType}: ");
+                if (!int.TryParse(Console.ReadLine(), out int seatsNumber) || seatsNumber < 0 || seatsNumber > 300)
+                {
+                    Console.WriteLine("Neispravan broj sjedišta! Unesite broj između 0 i 300.");
+                    continue;
+                }
+
+                switch (ticketType)
+                {
+                    case TicketType.Standard:
+                        airplane.StandardCapacity = seatsNumber;
+                        break;
+                    case TicketType.Business:
+                        airplane.BusinessCapacity = seatsNumber;
+                        break;
+                    case TicketType.VIP:
+                        airplane.VipCapacity = seatsNumber;
+                        break;
+                }
+            }
+            Console.WriteLine($"Avion {airplane.Name} uspješno dodan.");
+            Console.Write("Pritisnite bilo koju tipku za nastavak...");
+            Console.ReadKey();
+            return;
+
+        }
     }
 }

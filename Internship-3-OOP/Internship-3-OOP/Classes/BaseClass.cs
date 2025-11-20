@@ -13,7 +13,6 @@
             CreatedTime = DateTime.Now;
             LastUpdatedTime = DateTime.Now;
         }
-
         public void UpdateTimestamp()
         {
             LastUpdatedTime = DateTime.Now;
