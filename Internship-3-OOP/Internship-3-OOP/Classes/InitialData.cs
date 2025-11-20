@@ -369,5 +369,58 @@ namespace Internship_3_OOP.Classes
             return;
 
         }
+        public static void FindAirplane()
+
+        {
+            Console.Clear();
+            Console.WriteLine("Pretrazi avion po:\na) ID\nb) Ime");
+            Console.Write("\nOdabir: ");
+            var choice = Console.ReadLine();
+
+            if (choice == "a")
+            {
+                Console.Write("\nUnesi ID: ");
+                if (!int.TryParse(Console.ReadLine(), out int airplaneID))
+                {
+                    Console.WriteLine("Neispravan ID!");
+                    Console.Write("Pritisnite bilo koju tipku za nastavak...");
+                    Console.ReadKey();
+                    return;
+                }
+                var wantedAirplane = Airplanes.FirstOrDefault(airplane => airplane.ID == airplaneID);
+
+                if (wantedAirplane == null)
+                    Console.WriteLine("Avion s tim ID-om ne postoji.");
+                else
+                {
+                    Console.WriteLine("Traženi avion: ");
+                    Console.WriteLine($"{wantedAirplane.ID} - {wantedAirplane.Name} - {wantedAirplane.Year} - {wantedAirplane.FlightsNumber}");
+                }
+            }
+            else if (choice == "b")
+            {
+                Console.Write("\nUnesi ime aviona: ");
+                var airplaneName = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(airplaneName))
+                {
+                    Console.WriteLine("Neispravan unos imena");
+                    Console.Write("Pritisnite bilo koju tipku za nastavak...");
+                    Console.ReadKey();
+                    return;
+                }
+                var wantedAirplane = Airplanes.FirstOrDefault(airplane => airplane.Name.Equals(airplaneName, StringComparison.OrdinalIgnoreCase));
+                if (wantedAirplane == null)
+                    Console.WriteLine("Avion s tim imenom ne postoji.");
+                else
+                {
+                    Console.WriteLine("Traženi avion: ");
+                    Console.WriteLine($"{wantedAirplane.ID} - {wantedAirplane.Name} - {wantedAirplane.Year} - {wantedAirplane.FlightsNumber}");
+                }
+            }
+
+            Console.Write("Pritisnite bilo koju tipku za nastavak...");
+            Console.ReadKey();
+        }
     }
 }

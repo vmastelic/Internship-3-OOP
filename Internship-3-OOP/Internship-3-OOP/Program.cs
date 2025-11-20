@@ -90,7 +90,7 @@ namespace Internship_3_OOP
                 {
                     case "1": InitialData.PrintAllAirplanes(); break;
                     case "2": InitialData.AddAirplane(); break;
-                    case "3": break;
+                    case "3": InitialData.FindAirplane();  break;
                     case "4": break;
                     case "5": return;
                 }
