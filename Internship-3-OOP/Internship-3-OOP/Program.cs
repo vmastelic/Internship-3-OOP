@@ -54,7 +54,9 @@ namespace Internship_3_OOP
                 Console.WriteLine("1 - Prikaz svih letova");
                 Console.WriteLine("2 - Dodavanje leta");
                 Console.WriteLine("3 - Pretraživanje letova");
-                Console.WriteLine("3 - Pretraživanje letova");
+                Console.WriteLine("4 - Uređivanje leta");
+                Console.WriteLine("5 - Brisanje leta");
+                Console.WriteLine("6 - Povratak na prethodni izbornik");
                 Console.Write("\nOdabir: ");
                 var choice = Console.ReadLine();
 
@@ -62,7 +64,7 @@ namespace Internship_3_OOP
                 {
                     case "1": InitialData.PrintAllFlights(); break;
                     case "2": AddFlight(); break;
-                    case "3": return;
+                    case "3": InitialData.FindFlight(); break;
                 }
             }
         }

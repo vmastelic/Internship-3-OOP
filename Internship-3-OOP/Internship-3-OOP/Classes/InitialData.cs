@@ -15,9 +15,9 @@
             Passengers.Add(firstPassenger);
             Passengers.Add(secondPassenger);
             
-            var firstFlight = new Flight("Pariz", new DateTime(2025, 6, 10, 14, 30, 0), new DateTime(2025, 6, 10, 16, 45, 0), 550, TimeSpan.FromHours(2.25), 100, 20, 10);
-            var secondFlight = new Flight("Rim", new DateTime(2025, 6, 12, 8, 0, 0), new DateTime(2025, 6, 12, 9, 30, 0), 650, TimeSpan.FromHours(2.25), 100, 20, 10);
-            var thirdFlight = new Flight("Berlin", new DateTime(2025, 6, 12, 8, 0, 0), new DateTime(2025, 6, 12, 9, 30, 0), 650, TimeSpan.FromHours(2.25), 100, 20, 10);
+            var firstFlight = new Flight("Pariz", "Split", "Pariz", new DateTime(2025, 6, 10, 14, 30, 0), new DateTime(2025, 6, 10, 16, 45, 0), 550, TimeSpan.FromHours(2.25), 100, 20, 10);
+            var secondFlight = new Flight("Rim", "Split", "Rim", new DateTime(2025, 6, 12, 8, 0, 0), new DateTime(2025, 6, 12, 9, 30, 0), 650, TimeSpan.FromHours(2.25), 100, 20, 10);
+            var thirdFlight = new Flight("Berlin", "Split", "Berlin", new DateTime(2025, 6, 12, 8, 0, 0), new DateTime(2025, 6, 12, 9, 30, 0), 650, TimeSpan.FromHours(2.25), 100, 20, 10);
 
             var firstReservation = new Reservation(firstPassenger, firstFlight, TicketType.Standard);
             var secondReservation = new Reservation(secondPassenger, secondFlight, TicketType.Standard);
@@ -63,6 +63,85 @@
             Console.WriteLine("Popis svih letova: ");
             foreach (var flight in Flights)
                 Console.WriteLine($"{flight.ID} - {flight.Name} - {flight.Departure:yyyy-MM-dd} - {flight.Arrival:yyyy-MM-dd} - {flight.Distance}km - {flight.Duration}");
+            Console.Write("Pritisnite bilo koju tipku za nastavak...");
+            Console.ReadKey();
+        }
+
+        public static void FindFlight()
+        {
+            Console.Clear();
+            Console.WriteLine("Pretrazi let po\na) ID\nb) Ime");
+            Console.Write("\nOdabir: ");
+            var choice = Console.ReadLine();
+
+            if (choice == "a")
+            {
+                Console.Write("\nUnesi ID: ");
+                if (!int.TryParse(Console.ReadLine(), out int flightID))
+                {
+                    Console.WriteLine("Neispravan ID!");
+                    Console.Write("Pritisnite bilo koju tipku za nastavak...");
+                    Console.ReadKey();
+                    return;
+                }
+                var wantedFlight = Flights.FirstOrDefault(flight => flight.ID == flightID);
+
+                if (wantedFlight == null)
+                    Console.WriteLine("Let s tim ID-om ne postoji.");
+                else
+                {
+                    Console.WriteLine("Traženi let: ");
+                    Console.WriteLine($"{wantedFlight.ID} - {wantedFlight.Name} - {wantedFlight.StartLocation} -> {wantedFlight.EndLocation} - {wantedFlight.Departure:yyyy-MM-dd HH:mm} - {wantedFlight.Arrival:yyyy-MM-dd HH:mm} - {wantedFlight.Distance}km - {wantedFlight.Duration}");
+                    if (wantedFlight.Crew != null)
+                    {
+                        Console.WriteLine($"Posada: {wantedFlight.Crew.Name}");
+                        Console.WriteLine($"Pilot: {wantedFlight.Crew.Pilot.Name} {wantedFlight.Crew.Pilot.Surname}");
+                        Console.WriteLine($"Kopilot: {wantedFlight.Crew.Copilot.Name} {wantedFlight.Crew.Copilot.Surname}");
+                        Console.WriteLine($"Stjuardesa 1: {wantedFlight.Crew.Stewardess1.Name} {wantedFlight.Crew.Stewardess1.Surname}");
+                        Console.WriteLine($"Stjuardesa 2: {wantedFlight.Crew.Stewardess2.Name} {wantedFlight.Crew.Stewardess2.Surname}");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Posada nije dodijeljena ovom letu.");
+                    }
+                    Console.WriteLine($"Avion: {wantedFlight.Airplane.Name}\n Godina proizvodnje: {wantedFlight.Airplane.Year}");
+                }
+            }
+            else if (choice == "b")
+            {
+                Console.Write("\nUnesi ime: ");
+                var flightName = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(flightName))
+                {
+                    Console.WriteLine("Neispravan unos imena");
+                    Console.Write("Pritisnite bilo koju tipku za nastavak...");
+                    Console.ReadKey();
+                    return;
+                }
+                var wantedFlight = Flights.FirstOrDefault(flight => flight.Name.Equals(flightName, StringComparison.OrdinalIgnoreCase));
+                if (wantedFlight == null)
+                    Console.WriteLine("Let s tim imenom ne postoji.");
+                else
+                {
+                    Console.WriteLine("Traženi let: ");
+                    Console.WriteLine($"{wantedFlight.ID} - {wantedFlight.Name} - {wantedFlight.StartLocation} -> {wantedFlight.EndLocation} - {wantedFlight.Departure:yyyy-MM-dd HH:mm} - {wantedFlight.Arrival:yyyy-MM-dd HH:mm} - {wantedFlight.Distance}km - {wantedFlight.Duration}");
+                    if (wantedFlight.Crew != null)
+                    {
+                        Console.WriteLine($"Posada: {wantedFlight.Crew.Name}");
+                        Console.WriteLine($"Pilot: {wantedFlight.Crew.Pilot.Name} {wantedFlight.Crew.Pilot.Surname}");
+                        Console.WriteLine($"Kopilot: {wantedFlight.Crew.Copilot.Name} {wantedFlight.Crew.Copilot.Surname}");
+                        Console.WriteLine($"Stjuardesa 1: {wantedFlight.Crew.Stewardess1.Name} {wantedFlight.Crew.Stewardess1.Surname}");
+                        Console.WriteLine($"Stjuardesa 2: {wantedFlight.Crew.Stewardess2.Name} {wantedFlight.Crew.Stewardess2.Surname}");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Posada nije dodijeljena ovom letu.");
+                    }
+                    Console.WriteLine($"Avion: {wantedFlight.Airplane.Name}\n Godina proizvodnje: {wantedFlight.Airplane.Year}");
+                }
+            }
+
             Console.Write("Pritisnite bilo koju tipku za nastavak...");
             Console.ReadKey();
         }

@@ -25,9 +25,11 @@
 
         public Crew Crew { get; set; }
         public List<Passenger> Passengers { get; set; } = new List<Passenger>();
-        public Flight(string name, DateTime departure, DateTime arrival, int distance, TimeSpan duration, int Standard, int Buisness, int Vip)
+        public Flight(string name, string start, string end, DateTime departure, DateTime arrival, int distance, TimeSpan duration, int Standard, int Buisness, int Vip)
         {
             Name = name;
+            StartLocation = start;
+            EndLocation = end;
             Departure = departure;
             Arrival = arrival;
             Distance = distance;

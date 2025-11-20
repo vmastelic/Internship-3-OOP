@@ -26,7 +26,7 @@
         public void PrintReservedFlights(Passenger passenger)
         {
             Console.Clear();
-            foreach (var reservation in Reservations)
+            foreach (var reservation in passenger.Reservations)
                 Console.WriteLine($"{reservation.Flight.ID} - {reservation.Flight.Name} - {reservation.Flight.Departure.ToString("yyyy-MM-dd")} - {reservation.Flight.Arrival.ToString("yyyy-MM-dd")} - {reservation.Flight.Distance} - {reservation.Flight.Duration}");
 
             Console.Write("Pritisnite bilo koju tipku za nastavak...");
