@@ -1,7 +1,6 @@
 ﻿namespace Internship_3_OOP.Classes
 {
-
-    public enum TicketType
+        public enum TicketType
     {
         Standard,
         Business,
@@ -9,15 +8,23 @@
     }
     public class Flight : BaseClass
     {
+        public Flight() { }
         public string Name { get; set; }
         public DateTime Departure { get; set; }
         public DateTime Arrival { get; set; }
         public int Distance { get; set; }
         public TimeSpan Duration { get; set; }
-        public List<Passenger> Passengers { get; set; } = new List<Passenger>();
+        public string StartLocation { get; set; }
+        public string EndLocation { get; set; }
+
         public int StandardCapacity { get; set; }
         public int BusinessCapacity { get; set; }
         public int VipCapacity { get; set; }
+
+        public Airplane Airplane { get; set; }
+
+        public Crew Crew { get; set; }
+        public List<Passenger> Passengers { get; set; } = new List<Passenger>();
         public Flight(string name, DateTime departure, DateTime arrival, int distance, TimeSpan duration, int Standard, int Buisness, int Vip)
         {
             Name = name;

@@ -4,6 +4,8 @@
     {
         public static List<Passenger> Passengers = new List<Passenger>();
         public static List<Flight> Flights = new List<Flight>();
+        public static List<Crew> Crews = new List<Crew>();
+        public static List<Airplane> Airplanes = new List<Airplane>();
 
         public static void Initialize()
         {
@@ -12,7 +14,7 @@
 
             Passengers.Add(firstPassenger);
             Passengers.Add(secondPassenger);
-
+            
             var firstFlight = new Flight("Pariz", new DateTime(2025, 6, 10, 14, 30, 0), new DateTime(2025, 6, 10, 16, 45, 0), 550, TimeSpan.FromHours(2.25), 100, 20, 10);
             var secondFlight = new Flight("Rim", new DateTime(2025, 6, 12, 8, 0, 0), new DateTime(2025, 6, 12, 9, 30, 0), 650, TimeSpan.FromHours(2.25), 100, 20, 10);
             var thirdFlight = new Flight("Berlin", new DateTime(2025, 6, 12, 8, 0, 0), new DateTime(2025, 6, 12, 9, 30, 0), 650, TimeSpan.FromHours(2.25), 100, 20, 10);
@@ -28,6 +30,41 @@
             firstPassenger.AddReservation(firstReservation);
             secondPassenger.AddReservation(secondReservation);
             secondPassenger.AddReservation(thirdReservation);
+
+            var firstPilot = new CrewMember("Ivica", "Ivišić", Gender.Male, Position.Pilot, new DateOnly(1975, 3, 2));
+            var firstCopilot = new CrewMember("Jurica", "Ivišić", Gender.Male, Position.Copilot, new DateOnly(1977, 3, 2));
+            var firstStewardess1 = new CrewMember("Josipa", "Josipović", Gender.Female, Position.Stewardess, new DateOnly(1990, 3, 2));
+            var firstStewardess2 = new CrewMember("Anđela", "Josipović", Gender.Female, Position.Stewardess, new DateOnly(1995, 3, 2));
+
+            var secondPilot = new CrewMember("Petar", "Perić", Gender.Male, Position.Pilot, new DateOnly(1975, 3, 2));
+            var secondCopilot = new CrewMember("Marko", "Markić", Gender.Male, Position.Copilot, new DateOnly(1977, 3, 2));
+            var secondStewardess1 = new CrewMember("Ana", "Ančić", Gender.Female, Position.Stewardess, new DateOnly(1990, 3, 2));
+            var secondStewardess2 = new CrewMember("Petra", "Perić", Gender.Female, Position.Stewardess, new DateOnly(1995, 3, 2));
+
+            Crews.Add(new Crew("Prva Posada", firstPilot, firstCopilot, firstStewardess1, firstStewardess2));
+            Crews.Add(new Crew("Druga Posada", secondPilot, secondCopilot, secondStewardess1, secondStewardess2));
+
+            firstFlight.Crew = Crews[0];
+            firstFlight.Crew.IsAvailable = false;
+
+            var firstPlane = new Airplane("Boeing 747", 1980);
+            var secondPlane = new Airplane("Boeing 737", 1990);
+
+            Airplanes.Add(firstPlane);
+            Airplanes.Add(secondPlane);
+
+            firstFlight.Airplane = firstPlane;
+            secondFlight.Airplane = secondPlane;
+            thirdFlight.Airplane = secondPlane;
+        }
+        
+        public static void PrintAllFlights()
+        {
+            Console.WriteLine("Popis svih letova: ");
+            foreach (var flight in Flights)
+                Console.WriteLine($"{flight.ID} - {flight.Name} - {flight.Departure:yyyy-MM-dd} - {flight.Arrival:yyyy-MM-dd} - {flight.Distance}km - {flight.Duration}");
+            Console.Write("Pritisnite bilo koju tipku za nastavak...");
+            Console.ReadKey();
         }
     }
 }

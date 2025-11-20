@@ -19,9 +19,8 @@ namespace Internship_3_OOP
                 var choice = Console.ReadLine();
                 switch (choice)
                 {
-                    case "1":
-                        PassengersMenu();
-                        break;
+                    case "1": PassengersMenu(); break;
+                    case "2": FlightsMenu(); break;  
                     case "5": return;
                 }
             }
@@ -46,6 +45,148 @@ namespace Internship_3_OOP
                 }
             }
         }
+        static void FlightsMenu()
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("===LETOVI===");
+                Console.WriteLine("1 - Prikaz svih letova");
+                Console.WriteLine("2 - Dodavanje leta");
+                Console.WriteLine("3 - Pretraživanje letova");
+                Console.WriteLine("3 - Pretraživanje letova");
+                Console.Write("\nOdabir: ");
+                var choice = Console.ReadLine();
+
+                switch (choice)
+                {
+                    case "1": InitialData.PrintAllFlights(); break;
+                    case "2": AddFlight(); break;
+                    case "3": return;
+                }
+            }
+        }
+        static void AddFlight()
+        {
+            Flight flight = new Flight();
+            Console.Clear();
+            Console.WriteLine("===DODAVANJE LETA===");
+            while (true)
+            {
+                Console.Write("Unesite naziv leta: ");
+                var name = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(name)) { flight.Name = name; break; }
+                else Console.WriteLine("Ime ne smije biti prazno, pokušajte ponovno.");
+            }
+            while (true)
+            {
+                Console.Write("Unesite mjesto polaska: ");
+                var startLocation = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(startLocation)) { flight.StartLocation = startLocation; break; }
+                else { Console.WriteLine("Mjesto polaska ne smije biti prazno!"); }
+            }
+            while (true)
+            {
+                Console.Write("Unesite mjesto dolaska: ");
+                var endLocation = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(endLocation)) { flight.EndLocation = endLocation; break; }
+                else Console.WriteLine("Mjesto dolaska ne smije biti prazno!");
+            }
+            while (true)
+            {
+                Console.Write("Uneite vrijeme polaska (yyyy-MM-dd HH:mm): ");
+                if (DateTime.TryParse(Console.ReadLine(), out DateTime departure))
+                {
+                    flight.Departure = departure;
+                    break;
+                }
+                else Console.WriteLine("Pogrešan format datuma/vremena!");
+            }
+            while (true)
+            {
+                Console.Write("Uneite vrijeme dolaska (yyyy-MM-dd HH:mm): ");
+                if (DateTime.TryParse(Console.ReadLine(), out DateTime arrival))
+                {
+                    if (arrival > flight.Departure)
+                    {
+                        flight.Arrival = arrival;
+                        break;
+                    }
+                    else Console.WriteLine("Vrijeme dolaska mora biti nakon vremena polaska!");
+                }
+                else Console.WriteLine("Pogrešan format datuma/vremena!");
+            }
+
+            flight.Duration = flight.Arrival - flight.Departure;
+
+            while (true)
+            {
+                Console.Write("Unesite udaljenost leta u km: ");
+                if (int.TryParse(Console.ReadLine(), out int distance) && distance > 0)
+                {
+                    flight.Distance = distance;
+                    break;
+                }
+                else Console.WriteLine("Neispravan unos kilometraže!");
+            }
+
+
+            var availableCrews = InitialData.Crews.Where(c => c.IsAvailable).ToList();
+            if (!availableCrews.Any())
+            {
+                Console.WriteLine("Nema dostupnih posada za ovaj let!");
+                Console.Write("Pritisnite bilo koju tipku za nastavak...");
+                Console.ReadKey();
+                return;
+            }
+
+            Console.WriteLine("\nDostupne posade:");
+            for (int i = 0; i < availableCrews.Count; i++)
+            {
+                var crew = availableCrews[i];
+                Console.WriteLine($"{i + 1}. {crew.Name} - Pilot: {crew.Pilot.Name} {crew.Pilot.Surname}, Kopilot: {crew.Copilot.Name} {crew.Copilot.Surname}");
+            }
+
+            int crewChoice;
+            while (true)
+            {
+                Console.Write("Odaberite posadu (unesite broj): ");
+                if (int.TryParse(Console.ReadLine(), out crewChoice) && crewChoice >= 1 && crewChoice <= availableCrews.Count)
+                {
+                    flight.Crew = availableCrews[crewChoice - 1];
+                    flight.Crew.IsAvailable = false;
+                    break;
+                }
+                else Console.WriteLine("Neispravan odabir, pokušajte ponovno.");
+            }
+
+            var availablePlanes = InitialData.Airplanes.ToList();
+            
+            Console.WriteLine("\nDostupni avioni:");
+            for (int i = 0; i < availablePlanes.Count; i++)
+            {
+                var plane = availablePlanes[i];
+                Console.WriteLine($"{i + 1}. {plane.Name}, Godina proizvodnje: {plane.Year}");
+            }
+
+            int planeChoice;
+            while (true)
+            {
+                Console.Write("Odaberite avion (unesite broj): ");
+                if (int.TryParse(Console.ReadLine(), out planeChoice) && planeChoice >= 1 && planeChoice <= availablePlanes.Count)
+                {
+                    flight.Airplane = availablePlanes[planeChoice - 1];
+                    break;
+                }
+                else Console.WriteLine("Neispravan odabir, pokušajte ponovno.");
+            }
+
+
+            InitialData.Flights.Add(flight);
+            Console.WriteLine($"Let {flight.Name} uspješno dodan.");
+            Console.Write("Pritisnite bilo koju tipku za nastavak...");
+            Console.ReadKey();
+        }
         static void PassengerRegistration()
         {
             Passenger passenger = new Passenger();
@@ -57,7 +198,7 @@ namespace Internship_3_OOP
                 Console.Write("Unesite ime: ");
                 var name = Console.ReadLine();
                 if (!string.IsNullOrWhiteSpace(name)) { passenger.Name = name; break; }
-                else Console.WriteLine("Prezime ne smije biti prazno, pokusajte ponovno.");
+                else Console.WriteLine("Ime ne smije biti prazno, pokusajte ponovno.");
             }
             while (true)
             {
@@ -111,6 +252,8 @@ namespace Internship_3_OOP
                 else if (passwordFirst != null)
                 { passenger.Password = passwordFirst; break; }
             }
+
+
             InitialData.Passengers.Add(passenger);
             Console.WriteLine($"Putnik {passenger.Name} {passenger.Surname} registriran.");
             Console.Write("Pritisnite bilo koju tipku za nastavak...");
