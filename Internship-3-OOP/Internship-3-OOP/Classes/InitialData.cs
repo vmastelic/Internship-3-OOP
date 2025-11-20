@@ -57,7 +57,6 @@
             secondFlight.Airplane = secondPlane;
             thirdFlight.Airplane = secondPlane;
         }
-        
         public static void PrintAllFlights()
         {
             Console.WriteLine("Popis svih letova: ");
@@ -66,7 +65,6 @@
             Console.Write("Pritisnite bilo koju tipku za nastavak...");
             Console.ReadKey();
         }
-
         public static void FindFlight()
         {
             Console.Clear();
@@ -145,7 +143,6 @@
             Console.Write("Pritisnite bilo koju tipku za nastavak...");
             Console.ReadKey();
         }
-
         public static void EditFlight()
         {
             Console.Write("\nUnesi ID leta koji želiš urediti: ");
@@ -240,5 +237,53 @@
             Console.WriteLine("\nLet uspješno uređen!");
             Console.ReadKey();
         }
+        public static void DeleteFlight()
+        {
+            Console.Write("\nUnesi ID leta koji želiš izbrisati: ");
+            if (!int.TryParse(Console.ReadLine(), out int flightID))
+            {
+                Console.WriteLine("Neispravan unos ID-ja!");
+                Console.Write("Pritisnite bilo koju tipku za nastavak...");
+                Console.ReadKey();
+                return;
+            }
+            var wantedFlight = Flights.FirstOrDefault(flight => flight.ID == flightID);
+
+            if (wantedFlight == null)
+            {
+                Console.WriteLine("Let s tim ID-om ne postoji.");
+                Console.Write("Pritisnite bilo koju tipku za nastavak...");
+                Console.ReadKey();
+                return;
+            }
+            else
+            {
+                Console.WriteLine("Let za brisanje: ");
+                Console.WriteLine($"{wantedFlight.ID} - {wantedFlight.StartLocation} -> {wantedFlight.EndLocation} - {wantedFlight.Departure:yyyy-MM-dd HH:mm} - {wantedFlight.Arrival:yyyy-MM-dd HH:mm} - {wantedFlight.Distance}km - {wantedFlight.Duration}");
+            }
+            Console.Write($"Jeste li sigurni da želite izbrisati let '{wantedFlight.Name}'?(da/ne):");
+            var choice = Console.ReadLine();
+            if (choice.ToLower() != "da")
+            {
+                Console.WriteLine("Uređivanje otkazano.");
+                Console.Write("Pritisnite bilo koju tipku za nastavak...");
+                Console.ReadKey();
+                return;
+            }
+
+            if (wantedFlight.Crew != null)
+                wantedFlight.Crew.IsAvailable = true;
+            foreach (var passenger in Passengers)
+            {
+                var reservationsToRemove = passenger.Reservations.Where(r => r.Flight == wantedFlight).ToList();
+                foreach (var reservation in reservationsToRemove)
+                    passenger.Reservations.Remove(reservation);
+            }
+            Flights.Remove(wantedFlight);
+            Console.WriteLine("\nLet je uspješno izbrisan!");
+            Console.ReadKey();
+
+        }
+
     }
 }

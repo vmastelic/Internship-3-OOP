@@ -65,6 +65,9 @@ namespace Internship_3_OOP
                     case "1": InitialData.PrintAllFlights(); break;
                     case "2": AddFlight(); break;
                     case "3": InitialData.FindFlight(); break;
+                    case "4": InitialData.EditFlight(); break;   
+                    case "5": InitialData.DeleteFlight(); break;
+                    case "6": return;
                 }
             }
         }
