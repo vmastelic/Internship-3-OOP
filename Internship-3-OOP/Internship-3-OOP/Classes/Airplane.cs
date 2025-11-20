@@ -4,11 +4,18 @@
     {
         public string Name { get; set; }
         public int Year { get; set; }
+        public int StandardCapacity { get; set; }
+        public int BusinessCapacity { get; set; }
+        public int VipCapacity { get; set; }
+        public int FlightsNumber { get; set; } = 0;
 
-        public Airplane(string name, int year)
+        public Airplane(string name, int year, int standardCapacity, int buisnessCapacity, int vipCapacity)
         {
             Name = name;
             Year = year;
+            StandardCapacity = standardCapacity;
+            BusinessCapacity = buisnessCapacity;
+            VipCapacity = vipCapacity;
         }
     }
 }

@@ -20,7 +20,8 @@ namespace Internship_3_OOP
                 switch (choice)
                 {
                     case "1": PassengersMenu(); break;
-                    case "2": FlightsMenu(); break;  
+                    case "2": FlightsMenu(); break;
+                    case "3":AirplanesMenu(); break;
                     case "5": return;
                 }
             }
@@ -68,6 +69,30 @@ namespace Internship_3_OOP
                     case "4": InitialData.EditFlight(); break;   
                     case "5": InitialData.DeleteFlight(); break;
                     case "6": return;
+                }
+            }
+        }
+        static void AirplanesMenu()
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("===AVIONI===");
+                Console.WriteLine("1 - Prikaz svih aviona");
+                Console.WriteLine("2 - Dodavanje aviona");
+                Console.WriteLine("3 - Pretraživanje aviona");
+                Console.WriteLine("4 - Brisanje aviona");
+                Console.WriteLine("5 - Povratak na prethodni izbornik");
+                Console.Write("\nOdabir: ");
+                var choice = Console.ReadLine();
+
+                switch (choice)
+                {
+                    case "1": InitialData.PrintAllAirplanes(); break;
+                    case "2": break;
+                    case "3": break;
+                    case "4": break;
+                    case "5": return;
                 }
             }
         }
@@ -180,6 +205,7 @@ namespace Internship_3_OOP
                 if (int.TryParse(Console.ReadLine(), out planeChoice) && planeChoice >= 1 && planeChoice <= availablePlanes.Count)
                 {
                     flight.Airplane = availablePlanes[planeChoice - 1];
+                    availablePlanes[planeChoice - 1].FlightsNumber++;
                     break;
                 }
                 else Console.WriteLine("Neispravan odabir, pokušajte ponovno.");

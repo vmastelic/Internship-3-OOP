@@ -15,9 +15,9 @@
             Passengers.Add(firstPassenger);
             Passengers.Add(secondPassenger);
             
-            var firstFlight = new Flight("Pariz", "Split", "Pariz", new DateTime(2025, 6, 10, 14, 30, 0), new DateTime(2025, 6, 10, 16, 45, 0), 550, TimeSpan.FromHours(2.25), 100, 20, 10);
-            var secondFlight = new Flight("Rim", "Split", "Rim", new DateTime(2025, 6, 12, 8, 0, 0), new DateTime(2025, 6, 12, 9, 30, 0), 650, TimeSpan.FromHours(2.25), 100, 20, 10);
-            var thirdFlight = new Flight("Berlin", "Split", "Berlin", new DateTime(2025, 6, 12, 8, 0, 0), new DateTime(2025, 6, 12, 9, 30, 0), 650, TimeSpan.FromHours(2.25), 100, 20, 10);
+            var firstFlight = new Flight("Pariz", "Split", "Pariz", new DateTime(2025, 6, 10, 14, 30, 0), new DateTime(2025, 6, 10, 16, 45, 0), 550, TimeSpan.FromHours(2.25));
+            var secondFlight = new Flight("Rim", "Split", "Rim", new DateTime(2025, 6, 12, 8, 0, 0), new DateTime(2025, 6, 12, 9, 30, 0), 650, TimeSpan.FromHours(2.25));
+            var thirdFlight = new Flight("Berlin", "Split", "Berlin", new DateTime(2025, 6, 12, 8, 0, 0), new DateTime(2025, 6, 12, 9, 30, 0), 650, TimeSpan.FromHours(2.25));
 
             var firstReservation = new Reservation(firstPassenger, firstFlight, TicketType.Standard);
             var secondReservation = new Reservation(secondPassenger, secondFlight, TicketType.Standard);
@@ -47,18 +47,23 @@
             firstFlight.Crew = Crews[0];
             firstFlight.Crew.IsAvailable = false;
 
-            var firstPlane = new Airplane("Boeing 747", 1980);
-            var secondPlane = new Airplane("Boeing 737", 1990);
+            var firstPlane = new Airplane("Boeing 747", 1980, 100, 20, 10);
+            var secondPlane = new Airplane("Boeing 737", 1990, 100, 20, 10);
 
             Airplanes.Add(firstPlane);
             Airplanes.Add(secondPlane);
 
             firstFlight.Airplane = firstPlane;
+            firstPlane.FlightsNumber++;
             secondFlight.Airplane = secondPlane;
+            secondPlane.FlightsNumber++;
             thirdFlight.Airplane = secondPlane;
+            secondPlane.FlightsNumber++;
+
         }
         public static void PrintAllFlights()
         {
+            Console.Clear();
             Console.WriteLine("Popis svih letova: ");
             foreach (var flight in Flights)
                 Console.WriteLine($"{flight.ID} - {flight.Name} - {flight.Departure:yyyy-MM-dd} - {flight.Arrival:yyyy-MM-dd} - {flight.Distance}km - {flight.Duration}");
@@ -279,10 +284,20 @@
                 foreach (var reservation in reservationsToRemove)
                     passenger.Reservations.Remove(reservation);
             }
+            wantedFlight.Airplane.FlightsNumber--;
             Flights.Remove(wantedFlight);
             Console.WriteLine("\nLet je uspješno izbrisan!");
             Console.ReadKey();
 
+        }
+        public static void PrintAllAirplanes()
+        {
+            Console.Clear();
+            Console.WriteLine("Popis svih aviona: ");
+            foreach(var airplane in Airplanes) 
+                Console.WriteLine($"{airplane.ID} - {airplane.Name} - {airplane.Year} - {airplane.FlightsNumber}");
+            Console.Write("Pritisnite bilo koju tipku za nastavak...");
+            Console.ReadKey();
         }
 
     }
