@@ -145,5 +145,100 @@
             Console.Write("Pritisnite bilo koju tipku za nastavak...");
             Console.ReadKey();
         }
+
+        public static void EditFlight()
+        {
+            Console.Write("\nUnesi ID leta koji želiš urediti: ");
+            if (!int.TryParse(Console.ReadLine(), out int flightID))
+            {
+                Console.WriteLine("Neispravan unos ID-ja!");
+                Console.Write("Pritisnite bilo koju tipku za nastavak...");
+                Console.ReadKey();
+                return;
+            }
+            var wantedFlight = Flights.FirstOrDefault(flight => flight.ID == flightID);
+
+            if (wantedFlight == null)
+            {
+                Console.WriteLine("Let s tim ID-om ne postoji.");
+                Console.Write("Pritisnite bilo koju tipku za nastavak...");
+                Console.ReadKey();
+                return;
+            }
+
+            else
+            {
+                Console.WriteLine("Traženi let: ");
+                Console.WriteLine($"{wantedFlight.ID} - {wantedFlight.StartLocation} -> {wantedFlight.EndLocation} - {wantedFlight.Departure:yyyy-MM-dd HH:mm} - {wantedFlight.Arrival:yyyy-MM-dd HH:mm} - {wantedFlight.Distance}km - {wantedFlight.Duration}");
+            }
+
+            Console.Write($"Jeste li sigurni da želite urediti let '{wantedFlight.Name}'?(da/ne):");
+            var choice = Console.ReadLine();
+            if (choice.ToLower() != "da")
+            {
+                Console.WriteLine("Uređivanje otkazano.");
+                Console.Write("Pritisnite bilo koju tipku za nastavak...");
+                Console.ReadKey();
+                return;
+            }
+            while (true)
+            {
+                Console.Write("Uneite novo vrijeme polaska (yyyy-MM-dd HH:mm): ");
+                if (DateTime.TryParse(Console.ReadLine(), out DateTime departure))
+                {
+                    wantedFlight.Departure = departure;
+                    break;
+                }
+                else Console.WriteLine("Pogrešan format datuma/vremena!");
+            }
+            while (true)
+            {
+                Console.Write("Uneite vrijeme dolaska (yyyy-MM-dd HH:mm): ");
+                if (DateTime.TryParse(Console.ReadLine(), out DateTime arrival))
+                {
+                    if (arrival > wantedFlight.Departure)
+                    {
+                        wantedFlight.Arrival = arrival;
+                        break;
+                    }
+                    else Console.WriteLine("Vrijeme dolaska mora biti nakon vremena polaska!");
+                }
+                else Console.WriteLine("Pogrešan format datuma/vremena!");
+            }
+
+            var availableCrews = Crews.Where(c => c.IsAvailable).ToList();
+            if (!availableCrews.Any())
+            {
+                Console.WriteLine("Nema dostupnih posada za ovaj let!");
+                Console.Write("Pritisnite bilo koju tipku za nastavak...");
+                Console.ReadKey();
+                return;
+            }
+
+            Console.WriteLine("\nDostupne posade:");
+            for (int i = 0; i < availableCrews.Count; i++)
+            {
+                var crew = availableCrews[i];
+                Console.WriteLine($"{i + 1}. {crew.Name} - Pilot: {crew.Pilot.Name} {crew.Pilot.Surname}, Kopilot: {crew.Copilot.Name} {crew.Copilot.Surname}");
+            }
+
+            int crewChoice;
+            while (true)
+            {
+                Console.Write("Odaberite novu posadu: ");
+                if (int.TryParse(Console.ReadLine(), out crewChoice) && crewChoice >= 1 && crewChoice <= availableCrews.Count)
+                    break;
+
+                Console.WriteLine("Neispravan odabir!");
+            }
+            if (wantedFlight.Crew != null)
+                wantedFlight.Crew.IsAvailable = true;
+
+            wantedFlight.Crew = availableCrews[crewChoice - 1];
+            wantedFlight.Crew.IsAvailable = false;
+            wantedFlight.UpdateTimestamp();
+            Console.WriteLine("\nLet uspješno uređen!");
+            Console.ReadKey();
+        }
     }
 }

@@ -132,7 +132,6 @@ namespace Internship_3_OOP
                 else Console.WriteLine("Neispravan unos kilometraže!");
             }
 
-
             var availableCrews = InitialData.Crews.Where(c => c.IsAvailable).ToList();
             if (!availableCrews.Any())
             {
