@@ -17,7 +17,7 @@
         public string StartLocation { get; set; }
         public string EndLocation { get; set; }
 
-        public Airplane Airplane { get; set; }
+        public Airplane Airplane { get; set; } = null;
 
         public Crew Crew { get; set; }
         public List<Passenger> Passengers { get; set; } = new List<Passenger>();
