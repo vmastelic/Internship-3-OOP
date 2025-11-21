@@ -113,6 +113,7 @@ namespace Internship_3_OOP
                 switch (choice)
                 {
                     case "1": InitialData.PrintAllCrews(); break;
+                    case "2": InitialData.AddCrew(); break;
                     case "4": return;
                 }
             }

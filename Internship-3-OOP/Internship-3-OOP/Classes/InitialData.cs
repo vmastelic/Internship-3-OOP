@@ -8,6 +8,7 @@ namespace Internship_3_OOP.Classes
         public static List<Flight> Flights = new List<Flight>();
         public static List<Crew> Crews = new List<Crew>();
         public static List<Airplane> Airplanes = new List<Airplane>();
+        public static List<CrewMember> FreeCrewMembers = new List<CrewMember>();
 
         public static void Initialize()
         {
@@ -32,6 +33,16 @@ namespace Internship_3_OOP.Classes
             firstPassenger.AddReservation(firstReservation);
             secondPassenger.AddReservation(secondReservation);
             secondPassenger.AddReservation(thirdReservation);
+
+            var freePilot = new CrewMember("Mate", "Putnik", Gender.Male, Position.Pilot, new DateOnly(1975, 3, 2));
+            var freeCopilot = new CrewMember("Luka", "Botica", Gender.Male, Position.Copilot, new DateOnly(1975, 3, 2));
+            var freeStewardess1 = new CrewMember("Marta", "Vukić", Gender.Female, Position.Stewardess, new DateOnly(1975, 3, 2));
+            var freeStewardess2 = new CrewMember("Lana", "Vukas", Gender.Female, Position.Stewardess, new DateOnly(1975, 3, 2));
+
+            FreeCrewMembers.Add(freePilot);
+            FreeCrewMembers.Add(freeCopilot);
+            FreeCrewMembers.Add(freeStewardess1);
+            FreeCrewMembers.Add(freeStewardess2);
 
             var firstPilot = new CrewMember("Ivica", "Ivišić", Gender.Male, Position.Pilot, new DateOnly(1975, 3, 2));
             var firstCopilot = new CrewMember("Jurica", "Ivišić", Gender.Male, Position.Copilot, new DateOnly(1977, 3, 2));
@@ -560,13 +571,101 @@ namespace Internship_3_OOP.Classes
             foreach (var crew in Crews)
             {
                 Console.WriteLine($"\nNaziv posade: {crew.Name}, članovi:");
-                Console.WriteLine($"{crew.Pilot.Name} - {crew.Pilot.Surname} - Pozicija: {crew.Pilot.Position} - Godište: {crew.Pilot.BirthDate:yyyy}");
-                Console.WriteLine($"{crew.Copilot.Name} - {crew.Copilot.Surname} - Pozicija: {crew.Copilot.Position} - Godište: {crew.Copilot.BirthDate:yyyy}");
-                Console.WriteLine($"{crew.Stewardess1.Name} - {crew.Stewardess1.Surname} - Pozicija: {crew.Stewardess1.Position} - Godište: {crew.Stewardess1.BirthDate:yyyy}");
-                Console.WriteLine($"{crew.Stewardess2.Name} - {crew.Stewardess2.Surname} - Pozicija: {crew.Stewardess2.Position} - Godište: {crew.Stewardess2.BirthDate:yyyy}");
+                Console.WriteLine($"{crew.Pilot.Name} {crew.Pilot.Surname} - Pozicija: {crew.Pilot.Position} - Godište: {crew.Pilot.BirthDate:yyyy}");
+                Console.WriteLine($"{crew.Copilot.Name} {crew.Copilot.Surname} - Pozicija: {crew.Copilot.Position} - Godište: {crew.Copilot.BirthDate:yyyy}");
+                Console.WriteLine($"{crew.Stewardess1.Name} {crew.Stewardess1.Surname} - Pozicija: {crew.Stewardess1.Position} - Godište: {crew.Stewardess1.BirthDate:yyyy}");
+                Console.WriteLine($"{crew.Stewardess2.Name} {crew.Stewardess2.Surname} - Pozicija: {crew.Stewardess2.Position} - Godište: {crew.Stewardess2.BirthDate:yyyy}");
             }
             Console.Write("Pritisnite bilo koju tipku za nastavak...");
             Console.ReadKey();
         }
+        public static void AddCrew()
+        {
+            Console.Clear();
+            Console.WriteLine("=== KREIRANJE NOVE POSADE ===");
+
+            Console.Write("\nUnesite ime posade: ");
+            string crewName = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(crewName))
+            {
+                Console.WriteLine("Neispravan unos imena posade!");
+                Console.Write("Pritisnite bilo koju tipku za nastavak...");
+                Console.ReadKey();
+                return;
+            }
+
+            var pilot = SelectCrewMemberByPosition(Position.Pilot);
+            if (pilot == null) return;
+
+            var copilot = SelectCrewMemberByPosition(Position.Copilot);
+            if (copilot == null) return;
+
+            var stewardess1 = SelectCrewMemberByPosition(Position.Stewardess);
+            if (stewardess1 == null) return;
+
+            var stewardess2 = SelectCrewMemberByPosition(Position.Stewardess);
+            if (stewardess2 == null) return;
+            
+            var newCrew = new Crew
+            {
+                Name = crewName,
+                Pilot = pilot,
+                Copilot = copilot,
+                Stewardess1 = stewardess1,
+                Stewardess2 = stewardess2
+            };
+
+            Crews.Add(newCrew);
+            FreeCrewMembers.Remove(pilot);
+            FreeCrewMembers.Remove(copilot);
+            FreeCrewMembers.Remove(stewardess1);
+            FreeCrewMembers.Remove(stewardess2);
+
+            Console.WriteLine("\nPosada uspješno kreirana!");
+            Console.WriteLine($"Naziv: {newCrew.Name}");
+            Console.WriteLine($"Pilot: {pilot.Name} {pilot.Surname}");
+            Console.WriteLine($"Kopilot: {copilot.Name} {copilot.Surname}");
+            Console.WriteLine($"Stjuardese: {stewardess1.Name} {stewardess1.Surname} i {stewardess2.Name} {stewardess2.Surname}");
+
+            Console.Write("\nPritisnite bilo koju tipku za nastavak...");
+            Console.ReadKey();
+        }
+        private static CrewMember SelectCrewMemberByPosition(Position position)
+        {
+            var available = FreeCrewMembers.Where(m => m.Position == position).ToList();
+            if (available.Count == 0)
+            {
+                Console.WriteLine($"\nNema dostupnih članova za poziciju {position}!");
+                Console.Write("Pritisnite bilo koju tipku za nastavak...");
+                Console.ReadKey();
+                return null;
+            }
+            Console.WriteLine($"\nOdaberi {position}:");
+            foreach (var member in available)
+            {
+                Console.WriteLine($"{member.ID} - {member.Name} {member.Surname}");
+            }
+
+            Console.Write($"Odaberite ID za {position}: ");
+            if (!int.TryParse(Console.ReadLine(), out int id))
+            {
+                Console.WriteLine("Neispravan ID!");
+                Console.ReadKey();
+                return null;
+            }
+
+            var chosen = available.FirstOrDefault(member => member.ID == id);
+            if (chosen == null)
+            {
+                Console.WriteLine("Član posade s tim ID-om ne postoji u dostupnima.");
+                Console.Write("Pritisnite bilo koju tipku za nastavak...");
+                Console.ReadKey();
+                return null;
+            }
+
+            return chosen;
+        }
+
     }
 }
