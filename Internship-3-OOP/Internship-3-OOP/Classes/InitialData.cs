@@ -162,7 +162,6 @@ namespace Internship_3_OOP.Classes
                     }
                 }
             }
-
             Console.Write("Pritisnite bilo koju tipku za nastavak...");
             Console.ReadKey();
         }
@@ -311,6 +310,7 @@ namespace Internship_3_OOP.Classes
             Console.ReadKey();
 
         }
+
         public static void PrintAllAirplanes()
         {
             Console.Clear();
@@ -548,6 +548,22 @@ namespace Internship_3_OOP.Classes
                 Console.Write("Pritisnite bilo koju tipku za nastavak...");
                 Console.ReadKey();
                 return;
+            }
+            Console.Write("Pritisnite bilo koju tipku za nastavak...");
+            Console.ReadKey();
+        }
+
+        public static void PrintAllCrews()
+        {
+            Console.Clear();
+            Console.WriteLine("Popis svih posada: ");
+            foreach (var crew in Crews)
+            {
+                Console.WriteLine($"\nNaziv posade: {crew.Name}, članovi:");
+                Console.WriteLine($"{crew.Pilot.Name} - {crew.Pilot.Surname} - Pozicija: {crew.Pilot.Position} - Godište: {crew.Pilot.BirthDate:yyyy}");
+                Console.WriteLine($"{crew.Copilot.Name} - {crew.Copilot.Surname} - Pozicija: {crew.Copilot.Position} - Godište: {crew.Copilot.BirthDate:yyyy}");
+                Console.WriteLine($"{crew.Stewardess1.Name} - {crew.Stewardess1.Surname} - Pozicija: {crew.Stewardess1.Position} - Godište: {crew.Stewardess1.BirthDate:yyyy}");
+                Console.WriteLine($"{crew.Stewardess2.Name} - {crew.Stewardess2.Surname} - Pozicija: {crew.Stewardess2.Position} - Godište: {crew.Stewardess2.BirthDate:yyyy}");
             }
             Console.Write("Pritisnite bilo koju tipku za nastavak...");
             Console.ReadKey();

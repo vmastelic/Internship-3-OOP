@@ -21,7 +21,8 @@ namespace Internship_3_OOP
                 {
                     case "1": PassengersMenu(); break;
                     case "2": FlightsMenu(); break;
-                    case "3":AirplanesMenu(); break;
+                    case "3": AirplanesMenu(); break;
+                    case "4": CrewsMenu(); break;
                     case "5": return;
                 }
             }
@@ -96,6 +97,27 @@ namespace Internship_3_OOP
                 }
             }
         }
+        static void CrewsMenu()
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("===POSADE===");
+                Console.WriteLine("1 - Prikaz svih posada");
+                Console.WriteLine("2 - Kreiranje nove posade");
+                Console.WriteLine("3 - Dodavanje osobe");
+                Console.WriteLine("4 - Povratak na prethodni izbornik");
+                Console.Write("\nOdabir: ");
+                var choice = Console.ReadLine();
+
+                switch (choice)
+                {
+                    case "1": InitialData.PrintAllCrews(); break;
+                    case "4": return;
+                }
+            }
+        }
+
         static void AddFlight()
         {
             Flight flight = new Flight();
