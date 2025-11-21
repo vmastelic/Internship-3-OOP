@@ -19,6 +19,7 @@
         public Position Position { get; set; }
         public DateOnly BirthDate { get; set; }
         public bool HasCrew { get; set; } = false;
+        public CrewMember() { }
         
         public CrewMember(string name, string surname, Gender gender, Position position, DateOnly birthDate)
         {

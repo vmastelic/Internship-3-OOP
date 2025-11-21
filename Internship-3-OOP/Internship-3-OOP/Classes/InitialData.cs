@@ -17,7 +17,7 @@ namespace Internship_3_OOP.Classes
 
             Passengers.Add(firstPassenger);
             Passengers.Add(secondPassenger);
-            
+
             var firstFlight = new Flight("Pariz", "Split", "Pariz", new DateTime(2025, 6, 10, 14, 30, 0), new DateTime(2025, 6, 10, 16, 45, 0), 550, TimeSpan.FromHours(2.25));
             var secondFlight = new Flight("Rim", "Split", "Rim", new DateTime(2025, 6, 12, 8, 0, 0), new DateTime(2025, 6, 12, 9, 30, 0), 650, TimeSpan.FromHours(2.25));
             var thirdFlight = new Flight("Berlin", "Split", "Berlin", new DateTime(2025, 6, 12, 8, 0, 0), new DateTime(2025, 6, 12, 9, 30, 0), 650, TimeSpan.FromHours(2.25));
@@ -326,7 +326,7 @@ namespace Internship_3_OOP.Classes
         {
             Console.Clear();
             Console.WriteLine("Popis svih aviona: ");
-            foreach(var airplane in Airplanes) 
+            foreach (var airplane in Airplanes)
                 Console.WriteLine($"{airplane.ID} - {airplane.Name} - {airplane.Year} - {airplane.FlightsNumber}");
             Console.Write("Pritisnite bilo koju tipku za nastavak...");
             Console.ReadKey();
@@ -346,7 +346,7 @@ namespace Internship_3_OOP.Classes
             while (true)
             {
                 Console.Write("Unesite godinu porizvodnje aviona: ");
-                if(int.TryParse(Console.ReadLine(), out int year) && year <= 2025 && year >= 1925)
+                if (int.TryParse(Console.ReadLine(), out int year) && year <= 2025 && year >= 1925)
                 {
                     airplane.Year = year;
                     break;
@@ -606,7 +606,7 @@ namespace Internship_3_OOP.Classes
 
             var stewardess2 = SelectCrewMemberByPosition(Position.Stewardess);
             if (stewardess2 == null) return;
-            
+
             var newCrew = new Crew
             {
                 Name = crewName,
@@ -666,6 +666,80 @@ namespace Internship_3_OOP.Classes
 
             return chosen;
         }
+        public static void AddFreeCrewMember()
+        {
+            Console.Clear();
+            CrewMember crewMember = new CrewMember();
+            Console.WriteLine("===DODAVANJE ČLANA POSADE===");
 
+            while (true)
+            {
+                Console.Write("Unesite ime člana posade: ");
+                var name = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(name))
+                {
+                    crewMember.Name = name;
+                    break;
+                }
+                Console.WriteLine("Ime ne smije biti prazno, pokušajte ponovno.");
+            }
+
+            while (true)
+            {
+                Console.Write("Unesite prezime člana posade: ");
+                var surname = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(surname))
+                {
+                    crewMember.Surname = surname;
+                    break;
+                }
+                Console.WriteLine("Prezime ne smije biti prazno, pokušajte ponovno.");
+            }
+            while (true)
+            {
+                Console.Write("Unesite datum rođenja (yyyy-MM-dd): ");
+                if (DateOnly.TryParse(Console.ReadLine(), out DateOnly birthDate)
+                    && birthDate.Year >= 1925 && birthDate.Year <= 2007)
+                {
+                    crewMember.BirthDate = birthDate;
+                    break;
+                }
+                Console.WriteLine("Pogrešan format datuma/vremena ili nedozvoljena godina!");
+            }
+            while (true)
+            {
+                Console.WriteLine("\nSpol:");
+                Console.WriteLine("0 - Muško");
+                Console.WriteLine("1 - Žensko");
+                Console.Write("Odabir: ");
+
+                if (int.TryParse(Console.ReadLine(), out int genderChoice) && genderChoice >= 0 && genderChoice <= 1)
+                {
+                    crewMember.Gender = (Gender)genderChoice;
+                    break;
+                }
+                Console.WriteLine("Neispravan unos! Unesite 0 ili 1.");
+            }
+            while (true)
+            {
+                Console.WriteLine("\nPozicija:");
+                Console.WriteLine("0 - Pilot");
+                Console.WriteLine("1 - Copilot");
+                Console.WriteLine("2 - Stewardess");
+                Console.Write("Odabir: ");
+
+                if (int.TryParse(Console.ReadLine(), out int positionChoice) && positionChoice >= 0 && positionChoice <= 2)
+                {
+                    crewMember.Position = (Position)positionChoice;
+                    break;
+                }
+                Console.WriteLine("Neispravan unos! Odaberite broj 0-2.");
+            }
+
+            FreeCrewMembers.Add(crewMember);
+            Console.WriteLine($"\nČlan posade '{crewMember.Name} {crewMember.Surname}' uspješno dodan kao {crewMember.Position}.");
+            Console.Write("Pritisnite bilo koju tipku za nastavak...");
+            Console.ReadKey();
+        }
     }
 }
