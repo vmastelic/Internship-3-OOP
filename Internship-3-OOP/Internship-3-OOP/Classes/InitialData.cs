@@ -393,6 +393,7 @@ namespace Internship_3_OOP.Classes
                         break;
                 }
             }
+            Airplanes.Add(airplane);
             Console.WriteLine($"Avion {airplane.Name} uspješno dodan.");
             Console.Write("Pritisnite bilo koju tipku za nastavak...");
             Console.ReadKey();
@@ -735,7 +736,6 @@ namespace Internship_3_OOP.Classes
                 }
                 Console.WriteLine("Neispravan unos! Odaberite broj 0-2.");
             }
-
             FreeCrewMembers.Add(crewMember);
             Console.WriteLine($"\nČlan posade '{crewMember.Name} {crewMember.Surname}' uspješno dodan kao {crewMember.Position}.");
             Console.Write("Pritisnite bilo koju tipku za nastavak...");
