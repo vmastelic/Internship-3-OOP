@@ -1,4 +1,6 @@
-﻿namespace Internship_3_OOP.Classes
+﻿using Internship_3_OOP.Classes;
+
+namespace Internship_3_OOP.Classes
 {
     public class Crew : BaseClass
     {
