@@ -76,7 +76,8 @@ namespace Internship_3_OOP.Classes
                 else Console.WriteLine("Neispravan unos kilometraže!");
             }
 
-            var availableCrews = InitialData.Crews.Where(c => c.IsAvailable).ToList();
+            var availableCrews = InitialData.Crews.Where(c => c.IsAvailable(flight)).ToList();
+
             if (!availableCrews.Any())
             {
                 Console.WriteLine("Nema dostupnih posada za ovaj let!");
@@ -99,7 +100,6 @@ namespace Internship_3_OOP.Classes
                 if (int.TryParse(Console.ReadLine(), out crewChoice) && crewChoice >= 1 && crewChoice <= availableCrews.Count)
                 {
                     flight.Crew = availableCrews[crewChoice - 1];
-                    flight.Crew.IsAvailable = false;
                     break;
                 }
                 else Console.WriteLine("Neispravan odabir, pokušajte ponovno.");
@@ -286,7 +286,8 @@ namespace Internship_3_OOP.Classes
                 else Console.WriteLine("Pogrešan format datuma/vremena!");
             }
 
-            var availableCrews = InitialData.Crews.Where(c => c.IsAvailable).ToList();
+            var availableCrews = InitialData.Crews.Where(c => c.IsAvailable(wantedFlight)).ToList();
+
             if (!availableCrews.Any())
             {
                 Console.WriteLine("Nema dostupnih posada za ovaj let!");
@@ -311,11 +312,8 @@ namespace Internship_3_OOP.Classes
 
                 Console.WriteLine("Neispravan odabir!");
             }
-            if (wantedFlight.Crew != null)
-                wantedFlight.Crew.IsAvailable = true;
 
             wantedFlight.Crew = availableCrews[crewChoice - 1];
-            wantedFlight.Crew.IsAvailable = false;
             wantedFlight.UpdateTimestamp();
             Console.WriteLine("\nLet uspješno uređen!");
             Console.ReadKey();
@@ -357,8 +355,6 @@ namespace Internship_3_OOP.Classes
                 return;
             }
 
-            if (wantedFlight.Crew != null)
-                wantedFlight.Crew.IsAvailable = true;
             foreach (var passenger in InitialData.Passengers)
             {
                 var reservationsToRemove = passenger.Reservations.Where(r => r.Flight == wantedFlight).ToList();

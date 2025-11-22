@@ -9,7 +9,6 @@ namespace Internship_3_OOP.Classes
         public CrewMember Copilot { get; set; }
         public CrewMember Stewardess1 { get; set; }
         public CrewMember Stewardess2 { get; set; }
-        public bool IsAvailable { get; set; } = true;
         public Crew() { }
         public Crew(string name, CrewMember pilot, CrewMember copilot, CrewMember stewardess1, CrewMember stewardess2)
         {
@@ -19,6 +18,15 @@ namespace Internship_3_OOP.Classes
             Stewardess2 = stewardess2;
             Stewardess1 = stewardess1;
         }
-
+        public bool IsAvailable(Flight newFlight)
+        {
+            return !InitialData.Flights.Any(flight => flight.Crew == this &&
+                (
+                    (newFlight.Departure >= flight.Departure && newFlight.Departure < flight.Arrival) ||
+                    (newFlight.Arrival > flight.Departure && newFlight.Arrival <= flight.Arrival) ||
+                    (newFlight.Departure <= flight.Departure && newFlight.Arrival >= flight.Arrival)
+                )
+            );
+        }
     }
 }

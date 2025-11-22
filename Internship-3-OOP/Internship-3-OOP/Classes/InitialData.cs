@@ -1,5 +1,4 @@
-﻿using System.Net.Sockets;
-
+﻿
 namespace Internship_3_OOP.Classes
 {
     internal class InitialData
@@ -58,7 +57,6 @@ namespace Internship_3_OOP.Classes
             Crews.Add(new Crew("Druga Posada", secondPilot, secondCopilot, secondStewardess1, secondStewardess2));
 
             firstFlight.Crew = Crews[0];
-            firstFlight.Crew.IsAvailable = false;
 
             var firstPlane = new Airplane("Boeing 747", 1980, 100, 20, 10);
             var secondPlane = new Airplane("Boeing 737", 1990, 100, 20, 10);
